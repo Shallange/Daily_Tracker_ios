@@ -30,7 +30,15 @@ struct ContentView: View {
         }
     }
     private func addHabit() {
-        let habit = Habit(name: newHabitName)
+        let trimmedName = newHabitName.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        )
+
+        guard !trimmedName.isEmpty else {
+            return
+        }
+
+        let habit = Habit(name: trimmedName)
         modelContext.insert(habit)
         newHabitName = ""
     }
