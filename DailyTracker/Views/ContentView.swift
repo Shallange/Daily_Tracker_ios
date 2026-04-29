@@ -5,17 +5,34 @@
 //  Created by Jimmy kroneld on 2026-04-28.
 //
 
+import SwiftData
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \Habit.createdAt, order: .reverse) private var habits: [Habit]
+    @State private var newHabitName: String = ""
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List(habits) { habit in
+                Text(habit.name)
+            }
+            .navigationTitle("Daily Tracker")
+            HStack {
+                TextField("New Habit", text: $newHabitName)
+                    .textFieldStyle(.roundedBorder)
+                Button("Add") {
+                    addHabit()
+                }
+            }
+            .padding()
         }
-        .padding()
+    }
+    private func addHabit() {
+        let habit = Habit(name: newHabitName)
+        modelContext.insert(habit)
+        newHabitName = ""
     }
 }
 
