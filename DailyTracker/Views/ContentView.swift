@@ -18,6 +18,14 @@ struct ContentView: View {
             List {
                 ForEach(habits) { habit in
                     Text(habit.name)
+                        .swipeActions(edge: .leading) {
+                            Button {
+                                print("Completed habit: \(habit.name)")
+                            } label: {
+                                Label("Done", systemImage: "checkmark.circle")
+                            }
+                            .tint(.green)
+                        }
                 }
                 .onDelete(perform: deleteHabits)
             }
@@ -33,7 +41,7 @@ struct ContentView: View {
             .padding()
         }
     }
-    
+
     private func addHabit() {
         let trimmedName = newHabitName.trimmingCharacters(
             in: .whitespacesAndNewlines
@@ -47,7 +55,7 @@ struct ContentView: View {
         modelContext.insert(habit)
         newHabitName = ""
     }
-    
+
     private func deleteHabits(at offsets: IndexSet) {
         for index in offsets {
             let habit = habits[index]
