@@ -15,10 +15,14 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            List(habits) { habit in
-                Text(habit.name)
+            List {
+                ForEach(habits) { habit in
+                    Text(habit.name)
+                }
+                .onDelete(perform: deleteHabits)
             }
             .navigationTitle("Daily Tracker")
+
             HStack {
                 TextField("New Habit", text: $newHabitName)
                     .textFieldStyle(.roundedBorder)
@@ -29,6 +33,7 @@ struct ContentView: View {
             .padding()
         }
     }
+    
     private func addHabit() {
         let trimmedName = newHabitName.trimmingCharacters(
             in: .whitespacesAndNewlines
@@ -41,6 +46,13 @@ struct ContentView: View {
         let habit = Habit(name: trimmedName)
         modelContext.insert(habit)
         newHabitName = ""
+    }
+    
+    private func deleteHabits(at offsets: IndexSet) {
+        for index in offsets {
+            let habit = habits[index]
+            modelContext.delete(habit)
+        }
     }
 }
 
