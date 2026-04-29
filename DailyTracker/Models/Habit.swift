@@ -14,6 +14,9 @@ final class Habit{
     var name: String
     var createdAt: Date
     
+    //Stores dates when this habit/task is completed
+    var completedDates: [Date] = []
+    
     init(name: String) {
         self.name = name
         self.createdAt = Date()
