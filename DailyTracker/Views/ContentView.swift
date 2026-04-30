@@ -17,15 +17,24 @@ struct ContentView: View {
         NavigationStack {
             List {
                 ForEach(habits) { habit in
-                    Text(habit.name)
-                        .swipeActions(edge: .leading) {
-                            Button {
-                                print("Completed habit: \(habit.name)")
-                            } label: {
-                                Label("Done", systemImage: "checkmark.circle")
-                            }
-                            .tint(.green)
+                    HStack {
+                        Image(
+                            systemName: isCompletedToday(habit)
+                                ? "checkmark.circle.fill" : "circle"
+                        )
+                        .foregroundStyle(
+                            isCompletedToday(habit) ? .green : .secondary
+                        )
+                        Text(habit.name)
+                    }
+                    .swipeActions(edge: .leading) {
+                        Button {
+                            markCompletedToday(habit)
+                        } label: {
+                            Label("Done", systemImage: "checkmark.circle")
                         }
+                        .tint(.green)
+                    }
                 }
                 .onDelete(perform: deleteHabits)
             }
@@ -61,6 +70,25 @@ struct ContentView: View {
             let habit = habits[index]
             modelContext.delete(habit)
         }
+    }
+    
+    private func isCompletedToday(_ habit: Habit) -> Bool {
+        habit.completedDates.contains { date in
+            Calendar.current.isDateInToday(date)
+        }
+    }
+
+    private func markCompletedToday(_ habit: Habit) {
+        let isAlreadyCompletedToday = habit.completedDates.contains {
+            date in
+            Calendar.current.isDateInToday(date)
+        }
+
+        guard !isAlreadyCompletedToday else {
+            return
+        }
+
+        habit.completedDates.append(Date())
     }
 }
 
