@@ -9,12 +9,12 @@ import Foundation
 import SwiftData
 
 @Model
-final class Habit{
+final class Habit {
     var id: UUID = UUID()
     var name: String
     var createdAt: Date
     
-    //Stores dates when this habit/task is completed
+    // Stores dates when this habit/task is completed
     var completedDates: [Date] = []
     
     init(name: String) {

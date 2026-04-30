@@ -10,85 +10,54 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @State private var viewModel = HabitViewModel()
+
     @Query(sort: \Habit.createdAt, order: .reverse) private var habits: [Habit]
-    @State private var newHabitName: String = ""
 
     var body: some View {
+        @Bindable var viewModel = viewModel
         NavigationStack {
             List {
                 ForEach(habits) { habit in
                     HStack {
                         Image(
-                            systemName: isCompletedToday(habit)
+                            systemName: viewModel.isCompletedToday(habit)
                                 ? "checkmark.circle.fill" : "circle"
                         )
                         .foregroundStyle(
-                            isCompletedToday(habit) ? .green : .secondary
+                            viewModel.isCompletedToday(habit)
+                                ? .green : .secondary
                         )
                         Text(habit.name)
                     }
                     .swipeActions(edge: .leading) {
                         Button {
-                            markCompletedToday(habit)
+                            viewModel.markCompletedToday(habit)
                         } label: {
                             Label("Done", systemImage: "checkmark.circle")
                         }
                         .tint(.green)
                     }
                 }
-                .onDelete(perform: deleteHabits)
+                .onDelete { offsets in
+                    viewModel.deleteHabits(
+                        at: offsets,
+                        from: habits,
+                        context: modelContext
+                    )
+                }
             }
             .navigationTitle("Daily Tracker")
 
             HStack {
-                TextField("New Habit", text: $newHabitName)
+                TextField("New Habit", text: $viewModel.newHabitName)
                     .textFieldStyle(.roundedBorder)
                 Button("Add") {
-                    addHabit()
+                    viewModel.addHabit(context: modelContext)
                 }
             }
             .padding()
         }
-    }
-
-    private func addHabit() {
-        let trimmedName = newHabitName.trimmingCharacters(
-            in: .whitespacesAndNewlines
-        )
-
-        guard !trimmedName.isEmpty else {
-            return
-        }
-
-        let habit = Habit(name: trimmedName)
-        modelContext.insert(habit)
-        newHabitName = ""
-    }
-
-    private func deleteHabits(at offsets: IndexSet) {
-        for index in offsets {
-            let habit = habits[index]
-            modelContext.delete(habit)
-        }
-    }
-    
-    private func isCompletedToday(_ habit: Habit) -> Bool {
-        habit.completedDates.contains { date in
-            Calendar.current.isDateInToday(date)
-        }
-    }
-
-    private func markCompletedToday(_ habit: Habit) {
-        let isAlreadyCompletedToday = habit.completedDates.contains {
-            date in
-            Calendar.current.isDateInToday(date)
-        }
-
-        guard !isAlreadyCompletedToday else {
-            return
-        }
-
-        habit.completedDates.append(Date())
     }
 }
 
