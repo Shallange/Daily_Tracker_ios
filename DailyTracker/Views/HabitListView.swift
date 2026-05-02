@@ -8,7 +8,7 @@
 import SwiftData
 import SwiftUI
 
-struct ContentView: View {
+struct HabitListView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel = HabitViewModel()
 
@@ -55,5 +55,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    HabitListView()
 }
