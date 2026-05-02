@@ -18,26 +18,34 @@ struct HabitListView: View {
         @Bindable var viewModel = viewModel
         NavigationStack {
             List {
-                ForEach(habits) { habit in
-                    HabitListItemView(
-                        habit: habit,
-                        isCompletedToday: viewModel.isCompletedToday(habit)
+                if habits.isEmpty {
+                    ContentUnavailableView(
+                        "No habits added yet",
+                        systemImage: "checklist",
+                        description: Text("Add a new habit to get started!")
                     )
-                    .swipeActions(edge: .leading) {
-                        Button {
-                            viewModel.markCompletedToday(habit)
-                        } label: {
-                            Label("Done", systemImage: "checkmark.circle")
+                } else {
+                    ForEach(habits) { habit in
+                        HabitListItemView(
+                            habit: habit,
+                            isCompletedToday: viewModel.isCompletedToday(habit)
+                        )
+                        .swipeActions(edge: .leading) {
+                            Button {
+                                viewModel.markCompletedToday(habit)
+                            } label: {
+                                Label("Done", systemImage: "checkmark.circle")
+                            }
+                            .tint(.green)
                         }
-                        .tint(.green)
                     }
-                }
-                .onDelete { offsets in
-                    viewModel.deleteHabits(
-                        at: offsets,
-                        from: habits,
-                        context: modelContext
-                    )
+                    .onDelete { offsets in
+                        viewModel.deleteHabits(
+                            at: offsets,
+                            from: habits,
+                            context: modelContext
+                        )
+                    }
                 }
             }
             .navigationTitle("Daily Tracker")
