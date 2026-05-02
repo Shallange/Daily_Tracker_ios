@@ -19,17 +19,10 @@ struct ContentView: View {
         NavigationStack {
             List {
                 ForEach(habits) { habit in
-                    HStack {
-                        Image(
-                            systemName: viewModel.isCompletedToday(habit)
-                                ? "checkmark.circle.fill" : "circle"
-                        )
-                        .foregroundStyle(
-                            viewModel.isCompletedToday(habit)
-                                ? .green : .secondary
-                        )
-                        Text(habit.name)
-                    }
+                    HabitListItemView(
+                        habit: habit,
+                        isCompletedToday: viewModel.isCompletedToday(habit)
+                    )
                     .swipeActions(edge: .leading) {
                         Button {
                             viewModel.markCompletedToday(habit)
