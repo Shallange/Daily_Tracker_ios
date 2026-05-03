@@ -32,7 +32,10 @@ struct HabitListView: View {
                         )
                         .swipeActions(edge: .leading) {
                             Button {
-                                viewModel.markCompletedToday(habit)
+                                viewModel.markCompletedToday(
+                                    habit,
+                                    context: modelContext
+                                )
                             } label: {
                                 Label("Done", systemImage: "checkmark.circle")
                             }

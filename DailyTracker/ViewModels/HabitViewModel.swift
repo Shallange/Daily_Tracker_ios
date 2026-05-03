@@ -25,7 +25,13 @@ final class HabitViewModel {
 
         let habit = Habit(name: trimmedName)
         context.insert(habit)
-        newHabitName = ""
+
+        do {
+            try context.save()
+            newHabitName = ""
+        } catch {
+            errorMessage = "Could not save habit: \(error.localizedDescription)"
+        }
     }
 
     func deleteHabits(
@@ -37,6 +43,12 @@ final class HabitViewModel {
             let habit = habits[index]
             context.delete(habit)
         }
+        do {
+            try context.save()
+        } catch {
+            errorMessage =
+                "Could not delete habit: \(error.localizedDescription)"
+        }
     }
 
     func isCompletedToday(_ habit: Habit) -> Bool {
@@ -45,7 +57,7 @@ final class HabitViewModel {
         }
     }
 
-    func markCompletedToday(_ habit: Habit) {
+    func markCompletedToday(_ habit: Habit, context: ModelContext) {
         let isAlreadyCompletedToday = habit.completedDates.contains {
             date in
             Calendar.current.isDateInToday(date)
@@ -56,5 +68,11 @@ final class HabitViewModel {
         }
 
         habit.completedDates.append(Date())
+        do {
+            try context.save()
+        } catch {
+            errorMessage =
+                "Could not update habit: \(error.localizedDescription)"
+        }
     }
 }
