@@ -11,6 +11,7 @@ import SwiftData
 @Observable
 final class HabitViewModel {
     var newHabitName = ""
+    var errorMessage: String?
 
     func addHabit(context: ModelContext) {
         let trimmedName = newHabitName.trimmingCharacters(
@@ -18,6 +19,7 @@ final class HabitViewModel {
         )
 
         guard !trimmedName.isEmpty else {
+            errorMessage = "Habit name cannot be empty."
             return
         }
 
