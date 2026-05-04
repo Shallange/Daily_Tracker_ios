@@ -6,10 +6,29 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct StatsDashboardView: View {
+    @Query private var habits: [Habit]
+    
+    private var totalHabits: Int {
+        habits.count
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            List{
+                Section("Overview"){
+                    HStack{
+                        Text("Total habits")
+                        Spacer()
+                        Text("\(totalHabits)")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            .navigationTitle("Progress")
+        }
     }
 }
 
