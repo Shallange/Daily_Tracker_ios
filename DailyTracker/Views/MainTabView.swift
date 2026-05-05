@@ -20,6 +20,7 @@ struct MainTabView: View {
                     Label("Progress", systemImage: "chart.bar")
                 }
         }
+        .tint(.green)
     }
 }
 
