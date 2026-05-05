@@ -40,6 +40,15 @@ struct StatsDashboardView: View {
             else {
                 return nil
             }
+
+            let count = habits.reduce(0) { total, habit in
+                let completedDates = habit.completedDates.filter {
+                    completedDate in
+                    calendar.isDate(completedDate, inSameDayAs: date)
+                }
+                return total + completedDates.count
+            }
+
             return DailyCompletionStat(date: date, count: 0)
         }
     }
