@@ -12,7 +12,7 @@ import SwiftData
 struct DailyTrackerApp: App {
     var body: some Scene {
         WindowGroup {
-            HabitListView()
+            MainTabView()
         }
         .modelContainer(for: Habit.self)
     }
