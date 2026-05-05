@@ -5,6 +5,7 @@
 //  Created by Jimmy kroneld on 2026-05-04.
 //
 
+import Charts
 import SwiftData
 import SwiftUI
 
@@ -49,7 +50,7 @@ struct StatsDashboardView: View {
                 return total + completedDates.count
             }
 
-            return DailyCompletionStat(date: date, count: 0)
+            return DailyCompletionStat(date: date, count: count)
         }
     }
 
@@ -80,19 +81,13 @@ struct StatsDashboardView: View {
                     }
                 }
                 Section("Last 7 days") {
-                    ForEach(weeklyCompletionStats) { stat in
-                        HStack {
-                            Text(
-                                stat.date.formatted(
-                                    date: .abbreviated,
-                                    time: .omitted
-                                )
-                            )
-                            Spacer()
-                            Text("\(stat.count)")
-                                .foregroundStyle(.secondary)
-                        }
+                    Chart(weeklyCompletionStats) { stat in
+                        BarMark(
+                            x: .value("Day", stat.date, unit: .day),
+                            y: .value("Completions", stat.count)
+                        )
                     }
+                    .frame(height: 220)
                 }
             }
             .navigationTitle("Progress")
