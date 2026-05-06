@@ -55,9 +55,20 @@ struct HabitListView: View {
 
             HStack {
                 TextField("New Habit", text: $viewModel.newHabitName)
-                    .textFieldStyle(.roundedBorder)
-                Button("Add") {
+                    .textInputAutocapitalization(.sentences)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 8)
+                    .background(Color(.secondarySystemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                Button {
                     viewModel.addHabit(context: modelContext)
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.headline)
+                        .frame(width: 42, height: 42)
+                        .background(.green)
+                        .foregroundStyle(.white)
+                        .clipShape(Circle())
                 }
             }
             .padding()

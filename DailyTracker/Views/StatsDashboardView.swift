@@ -74,7 +74,7 @@ struct StatsDashboardView: View {
                     }
 
                     HStack {
-                        Text("Best Streak")
+                        Text("Best streak")
                         Spacer()
                         Text("\(bestStreak) day\(bestStreak == 1 ? "" : "s")")
                             .foregroundStyle(.secondary)

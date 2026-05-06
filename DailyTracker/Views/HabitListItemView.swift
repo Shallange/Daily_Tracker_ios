@@ -33,6 +33,6 @@ struct HabitListItemView: View {
 
     private var streakText: String {
         let dayWord = habit.currentStreak == 1 ? "day" : "days"
-        return "Current Streak: \(habit.currentStreak) \(dayWord) 🔥"
+        return "Current streak: \(habit.currentStreak) \(dayWord) 🔥"
     }
 }
