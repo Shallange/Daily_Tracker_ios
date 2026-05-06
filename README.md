@@ -23,3 +23,7 @@ DailyTracker is a simple iOS habit tracking app built with SwiftUI and SwiftData
 - SwiftData
 - SwiftUI Charts
 - MVVM-style structure
+
+## App Flow
+
+![DailyTracker App Flow](docs/app-flow.png)
