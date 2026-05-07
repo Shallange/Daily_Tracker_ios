@@ -35,7 +35,18 @@ extension Habit {
         )
 
         var streak = 0
-        var dayToCheck = calendar.startOfDay(for: Date())
+        let today = calendar.startOfDay(for: Date())
+
+        guard var dayToCheck = completedDays.contains(today)
+            ? today
+            : calendar.date(byAdding: .day, value: -1, to: today)
+        else {
+            return 0
+        }
+
+        guard completedDays.contains(dayToCheck) else {
+            return 0
+        }
         
         // Count backwards from today until a missing day breaks the streak
         while completedDays.contains(dayToCheck) {
